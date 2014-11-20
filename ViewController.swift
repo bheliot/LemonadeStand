@@ -11,12 +11,18 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var currentDollarAmountLabel: UILabel!
+    @IBOutlet weak var todaysSalesAmountLabel: UILabel!
     @IBOutlet weak var currentLemonCountLabel: UILabel!
     @IBOutlet weak var currentIceCubeCountLabel: UILabel!
     @IBOutlet weak var purchasedLemonsLabel: UILabel!
     @IBOutlet weak var purchasedIceCubesLabel: UILabel!
     @IBOutlet weak var mixLemonsLabel: UILabel!
     @IBOutlet weak var mixIceCubesLabel: UILabel!
+    @IBOutlet weak var todaysWeatherImageView: UIImageView!
+    
+    //Daily Numbers
+    var todaysSalesAmount: Int = 0
+    var todaysCustomersCount: Int = 0
     
     //Prices
     let lemonPrice = 2
@@ -162,7 +168,9 @@ class ViewController: UIViewController {
                 flavorRange = 3
             }
             
-            let todaysCustomersCount = Int(arc4random_uniform(UInt32(11)))
+            var weatherToday = Weather()
+            todaysWeatherImageView.image = weatherToday.imageIcon()
+            todaysCustomersCount = weatherToday.numberOfCustomers()
             if todaysCustomersCount == 0 {
                 println("You got no customers today.")
             }
@@ -172,11 +180,13 @@ class ViewController: UIViewController {
                     var customerPrefRange = currentCustomer.determineRange()
                     if customerPrefRange == flavorRange {
                         ++money
+                        ++todaysSalesAmount
                         println("You made a sale! Customer's Preference: \(customerPrefRange); Today's Mix: \(flavorRange)")
                     }
                     else {
                         println("No sale.")
                     }
+                todaysSalesAmountLabel.text = "$\(todaysSalesAmount)"
                 }
             }
             
@@ -189,6 +199,7 @@ class ViewController: UIViewController {
             mixLemonsLabel.text = "0"
             mixIceCubesLabel.text = "0"
             currentDollarAmountLabel.text = "$\(money)"
+            todaysSalesAmount = 0
             bankruptcyCheck()
         }
         else if lemonsCount < 0 || iceCubesCount < 0 {
