@@ -206,7 +206,17 @@ class ViewController: UIViewController {
            showAlertWithText(message: "You can't have a negative amount of supplies.")
         }
         else if mixedLemons <= 0 || mixedIceCubes <= 0 {
+            if money == 0 && lemonsCount == 0 {
+                showAlertWithText(message: "Game Over")
+                reset()
+            }
+            else if money == 0 && iceCubesCount == 0 {
+                showAlertWithText(message: "Game Over")
+                reset()
+            }
+            else {
             showAlertWithText(message: "You need to mix ingredients.")
+            }
         }
         else {
             println("Some kind of error.")
